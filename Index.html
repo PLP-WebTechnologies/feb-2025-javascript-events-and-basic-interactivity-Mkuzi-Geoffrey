@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Webpage</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        header {
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        main {
+            margin-bottom: 20px;
+        }
+
+        section {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        #styledElement {
+            color: navy;
+            font-weight: bold;
+            padding: 5px;
+        }
+
+        .highlight {
+            background-color: yellow;
+            font-style: italic;
+        }
+
+        #itemList {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .image-gallery {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .image-gallery img {
+            margin: 10px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .accordion {
+            margin-top: 15px;
+            border: 1px solid #ccc;
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid #ccc;
+        }
+
+        .accordion-header {
+            background-color: #eee;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .accordion-content {
+            padding: 10px;
+            display: none; /* Initially hidden */
+        }
+
+        .show {
+            display: block !important; /* For toggling accordion content */
+        }
+
+        /* Bonus: Animation (example - you can get creative!) */
+        #changingText {
+            transition: color 0.5s ease-in-out;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Interactive Webpage</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Event Handling</h2>
+            <button id="clickButton">Click Me!</button>
+            <div id="hoverArea" style="width: 150px; height: 50px; border: 1px solid #ccc; margin-bottom: 10px; text-align: center; line-height: 50px;">Hover Here</div>
+            <input type="text" id="keypressInput" placeholder="Type something">
+            <div id="keypressOutput"></div>
+            <button id="doubleClickButton">Double Click Me (Secret!)</button>
+            <div id="longPressArea" style="background-color: lightblue; padding: 15px; text-align: center; margin-top: 10px;">Long Press Me (Secret!)</div>
+        </section>
+
+        <section>
+            <h2>Interactive Elements</h2>
+
+            <div>
+                <button id="changeButton">Change Text</button>
+                <p id="changingText">Initial Text</p>
+            </div>
+
+            <div class="image-gallery">
+                <img id="galleryImage" src="download.jpg" alt="Image 1">
+                <p>Image Gallery</p>
+                <button id="changeButton">Change Image</button>
+                <button id="prevImage">Previous</button>
+                <button id="nextImage">Next</button>
+            </div>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header" data-target="content1">Section 1</button>
+                    <div id="content1" class="accordion-content">Content for section 1.</div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" data-target="content2">Section 2</button>
+                    <div id="content2" class="accordion-content">Content for section 2.</div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" data-target="content3">Section 3</button>
+                    <div id="content3" class="accordion-content">Content for section 3.</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Form Validation</h2>
+            <form id="myForm">
+                <div>
+                    <label for="name">Name (required):</label>
+                    <input type="text" id="name" required>
+                    <div class="error-message" id="nameError"></div>
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email">
+                    <div class="error-message" id="emailError"></div>
+                </div>
+                <div>
+                    <label for="password">Password (min 8 characters):</label>
+                    <input type="password" id="password">
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                <button type="submit">Submit</button>
+                <div id="formMessage"></div>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My Interactive Page</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const clickButton = document.getElementById('clickButton');
+            const hoverArea = document.getElementById('hoverArea');
+            const keypressInput = document.getElementById('keypressInput');
+            const keypressOutput = document.getElementById('keypressOutput');
+            const doubleClickButton = document.getElementById('doubleClickButton');
+            const longPressArea = document.getElementById('longPressArea');
+            const changeButton = document.getElementById('changeButton');
+            const changingText = document.getElementById('changingText');
+            const galleryImage = document.getElementById('galleryImage');
+            const prevImageButton = document.getElementById('prevImage');
+            const nextImageButton = document.getElementById('nextImage');
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            const form = document.getElementById('myForm');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const nameError = document.getElementById('nameError');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            const formMessage = document.getElementById('formMessage');
+            let isOriginalText = true;
+            const images = [
+                "https://via.placeholder.com/150/FF0000",
+                "https://via.placeholder.com/150/00FF00",
+                "https://via.placeholder.com/150/0000FF"
+            ];
+            let currentImageIndex = 0;
+            let longPressTimer;
+
+            // Event Handling
+            clickButton.addEventListener('click', () => {
+                alert('Button clicked!');
+            });
+
+            hoverArea.addEventListener('mouseover', () => {
+                hoverArea.style.backgroundColor = 'yellow';
+            });
+
+            hoverArea.addEventListener('mouseout', () => {
+                hoverArea.style.backgroundColor = '#f0f0f0';
+            });
+
+            keypressInput.addEventListener('keypress', (event) => {
+                keypressOutput.textContent = `You pressed: ${event.key}`;
+            });
+
+            doubleClickButton.addEventListener('dblclick', () => {
+                alert('Secret double-click action triggered!');
+            });
+
+            longPressArea.addEventListener('mousedown', () => {
+                longPressTimer = setTimeout(() => {
+                    alert('Secret long press action triggered!');
+                }, 1500);
+            });
+
+            longPressArea.addEventListener('mouseup', () => {
+                clearTimeout(longPressTimer);
+            });
+
+            longPressArea.addEventListener('mouseleave', () => {
+                clearTimeout(longPressTimer);
+            });
+
+            // Interactive Elements
+            changeButton.addEventListener('click', () => {
+                if (isOriginalText) {
+                    changingText.textContent = 'Text has changed!';
+                    changingText.style.color = 'green';
+                    isOriginalText = false;
+                } else {
+                    changingText.textContent = 'Initial Text';
+                    changingText.style.color = 'inherit';
+                    isOriginalText = true;
+                }
+            });
+
+            prevImageButton.addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                galleryImage.src = images[currentImageIndex];
+            });
+
+            nextImageButton.addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                galleryImage.src = images[currentImageIndex];
+            });
+
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const targetId = header.getAttribute('data-target');
+                    const targetContent = document.getElementById(targetId);
+
+                    targetContent.classList.toggle('show');
+
+                    accordionHeaders.forEach(otherHeader => {
+                        if (otherHeader !== header) {
+                            const otherTargetId = otherHeader.getAttribute('data-target');
+                            const otherTargetContent = document.getElementById(otherTargetId);
+                            otherTargetContent.classList.remove('show');
+                        }
+                    });
+                });
+            });
+
+            // Form Validation
+            form.addEventListener('submit', (event) => {
+                let isValid = true;
+
+                if (nameInput.value.trim() === '') {
+                    nameError.textContent = 'Name is required.';
+                    isValid = false;
+                } else {
+                    nameError.textContent = '';
+                }
+
+                if (emailInput.value.trim() !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+                    emailError.textContent = 'Invalid email format.';
+                    isValid = false;
+                } else {
+                    emailError.textContent = '';
+                }
+
+                if (passwordInput.value.length < 8) {
+                    passwordError.textContent = 'Password must be at least 8 characters long.';
+                    isValid = false;
+                } else {
+                    passwordError.textContent = '';
+                }
+
+                if (!isValid) {
+                    event.preventDefault();
+                    formMessage.textContent = 'Please correct the errors above.';
+                    formMessage.style.color = 'red';
+                } else {
+                    formMessage.textContent = 'Form submitted successfully!';
+                    formMessage.style.color = 'green';
+                }
+            });
+
+            passwordInput.addEventListener('input', () => {
+                if (passwordInput.value.length < 8) {
+                    passwordError.textContent = 'Password must be at least 8 characters long.';
+                } else {
+                    passwordError.textContent = '';
+                }
+            });
+
+            emailInput.addEventListener('input', () => {
+                if (emailInput.value.trim() !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+                    emailError.textContent = 'Invalid email format.';
+                } else {
+                    emailError.textContent = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
